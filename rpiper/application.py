@@ -3,6 +3,7 @@
 from typing import Optional
 
 from .ratbagd import Ratbagd
+from .razer import RazerRatbagd
 from .window import Window
 
 import gi
@@ -22,11 +23,11 @@ class Application(Gtk.Application):
         """Instantiates a new Application."""
         Gtk.Application.__init__(
             self,
-            application_id="org.freedesktop.Piper",
+            application_id="io.github.ereneksen.RPiper",
             flags=Gio.ApplicationFlags.FLAGS_NONE,
         )
-        GLib.set_application_name("Piper")
-        GLib.set_prgname("org.freedesktop.Piper")
+        GLib.set_application_name("RPiper")
+        GLib.set_prgname("io.github.ereneksen.RPiper")
         self._required_ratbagd_version = ratbagd_api_version
 
     def do_startup(self) -> None:
@@ -39,7 +40,7 @@ class Application(Gtk.Application):
 
     def init_ratbagd(self) -> Ratbagd:
         if self._ratbagd is None:
-            self._ratbag = Ratbagd(self._required_ratbagd_version)
+            self._ratbag = RazerRatbagd(self._required_ratbagd_version)
         return self._ratbag
 
     def do_activate(self) -> None:

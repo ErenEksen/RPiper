@@ -5,7 +5,7 @@ from typing import Optional
 
 import gi
 
-from piper.ratbagd import RatbagdProfile
+from rpiper.ratbagd import RatbagdProfile
 
 from .util.gobject import connect_signal_with_weak_ref
 

@@ -11,8 +11,8 @@ conf.set('version', meson.project_version())
 conf.set('version_date', version_date)
 
 manpage = configure_file(
-     input: files('piper.1.in'),
-     output: 'piper.1',
+     input: files('rpiper.1.in'),
+     output: 'rpiper.1',
      configuration: conf,
 )
 
@@ -25,22 +25,22 @@ about_dialog = configure_file(input: 'ui/AboutDialog.ui.in',
                               output: 'AboutDialog.ui',
                               configuration: conf)
 
-install_data('org.freedesktop.Piper.svg', install_dir: icondir)
-install_data('org.freedesktop.Piper-symbolic.svg', install_dir: symbolicicondir)
+install_data('io.github.ereneksen.RPiper.svg', install_dir: icondir)
+install_data('io.github.ereneksen.RPiper-symbolic.svg', install_dir: symbolicicondir)
 
-i18n.merge_file(input: 'org.freedesktop.Piper.desktop.in',
-                output: 'org.freedesktop.Piper.desktop',
+i18n.merge_file(input: 'io.github.ereneksen.RPiper.desktop.in',
+                output: 'io.github.ereneksen.RPiper.desktop',
                 type: 'desktop',
                 po_dir: podir,
                 install: true,
                 install_dir: desktopdir)
 
-appdata = configure_file(input: 'org.freedesktop.Piper.appdata.xml.in.in',
-                         output: 'org.freedesktop.Piper.appdata.xml.in',
+appdata = configure_file(input: 'io.github.ereneksen.RPiper.appdata.xml.in.in',
+                         output: 'io.github.ereneksen.RPiper.appdata.xml.in',
                          configuration: conf)
 
 appdata = i18n.merge_file(input: appdata,
-                          output: 'org.freedesktop.Piper.appdata.xml',
+                          output: 'io.github.ereneksen.RPiper.appdata.xml',
                           type: 'xml',
                           po_dir: podir,
                           install: true,
@@ -64,9 +64,14 @@ gresource = configure_file(input: 'piper.gresource.xml.in',
                                      join_paths(meson.current_build_dir(), 'piper.gresource.xml'),
                                      join_paths(meson.current_source_dir(), 'svgs')])
 
-gnome.compile_resources('piper', gresource,
+gnome.compile_resources('rpiper', gresource,
                         source_dir: '.',
                         dependencies: [about_dialog],
                         gresource_bundle: true,
                         install: true,
                         install_dir: pkgdatadir)
+
+install_data('70-rpiper-razer.rules',
+             install_dir: join_paths(prefix, 'lib', 'udev', 'rules.d'))
+install_data('rpiper-razer-macros.service',
+             install_dir: join_paths(prefix, 'lib', 'systemd', 'user'))

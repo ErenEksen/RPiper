@@ -1,4 +1,4 @@
-project('piper',
+project('rpiper',
     version: '0.8',
     license: 'GPL-2.0-or-later',
     meson_version: '>= 0.51.0')
@@ -79,7 +79,7 @@ subdir('po')
 pymod = import('python')
 py3 = pymod.find_installation(modules: python_modules)
 python_dir = py3.get_install_dir()
-install_subdir('piper',
+install_subdir('rpiper',
                install_dir: python_dir,
                exclude_directories: '__pycache__')
 
@@ -99,13 +99,13 @@ sys.path.insert(1, '@0@')
 print('Running from source tree, using local files')
 '''.format(meson.current_source_dir()))
 
-configure_file(input: 'piper.in',
-               output: 'piper',
+configure_file(input: 'rpiper.in',
+               output: 'rpiper',
                configuration: config_piper,
                install_dir: bindir)
 
-configure_file(input: 'piper.in',
-               output: 'piper.devel',
+configure_file(input: 'rpiper.in',
+               output: 'rpiper.devel',
                configuration: config_piper_devel)
 
 if meson.version().version_compare('>=0.59.0')
@@ -134,6 +134,17 @@ test(
   find_program('tests/svg-lookup-ini-test.py'),
   args : [svg_mapping, join_paths(meson.current_source_dir(), 'data/svgs/')],
 )
+
+env_razer = environment()
+env_razer.set('PYTHONPATH', meson.current_source_dir())
+foreach t : ['razer-test', 'razermacros-test']
+  test(
+    t,
+    py3,
+    args : [join_paths(meson.current_source_dir(), 'tests', t + '.py')],
+    env : env_razer,
+  )
+endforeach
 
 test(
   'files-in-git',

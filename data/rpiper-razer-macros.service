@@ -1,0 +1,11 @@
+[Unit]
+Description=RPiper Razer macro replay service
+StartLimitIntervalSec=0
+
+[Service]
+ExecStart=python3 -P -m rpiper.razermacros
+Restart=always
+RestartSec=10
+
+[Install]
+WantedBy=default.target

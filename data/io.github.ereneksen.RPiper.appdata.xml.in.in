@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <component type="desktop-application">
-  <id>org.freedesktop.Piper</id>
+  <id>io.github.ereneksen.RPiper</id>
   <developer id="io.github.libratbag">
     <name>libratbag developers</name>
   </developer>
   <metadata_license>FSFAP</metadata_license>
   <project_license>GPL-2.0-or-later</project_license>
   <content_rating type="oars-1.1" />
-  <name translatable="no">Piper</name>
+  <name translatable="no">RPiper</name>
   <summary>Gaming mouse configuration utility</summary>
   <description>
     <p>
@@ -23,7 +23,7 @@
     </p>
   </description>
 
-  <launchable type="desktop-id">org.freedesktop.Piper.desktop</launchable>
+  <launchable type="desktop-id">io.github.ereneksen.RPiper.desktop</launchable>
 
   <screenshots>
     <screenshot type="default">
@@ -40,14 +40,14 @@
     </screenshot>
   </screenshots>
 
-  <url type="homepage">https://github.com/libratbag/piper/</url>
-  <url type="bugtracker">https://github.com/libratbag/piper/issues</url>
+  <url type="homepage">https://github.com/ErenEksen/RPiper</url>
+  <url type="bugtracker">https://github.com/ErenEksen/RPiper/issues</url>
   <url type="help">https://github.com/libratbag/piper/wiki</url>
 
-  <translation type="gettext">piper</translation>
+  <translation type="gettext">rpiper</translation>
 
   <provides>
-    <binary>piper</binary>
+    <binary>rpiper</binary>
   </provides>
 
   <releases>

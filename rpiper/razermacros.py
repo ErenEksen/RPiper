@@ -1,0 +1,107 @@
+# SPDX-License-Identifier: GPL-2.0-or-later
+
+"""Replays macros for a Razer Basilisk V3 X HyperSpeed. A button with a macro
+is mapped on the device to the consumer usage spare_usage(button index); this
+service reads that press from hidraw and plays the macro through uinput.
+
+hidraw, not evdev: other programs may hold exclusive grabs on the mouse's
+evdev nodes, which hides their events from every other reader."""
+
+import glob
+import json
+import os
+import sys
+import time
+
+from evdev import UInput, UInputError, ecodes
+
+MACRO_FILE = os.path.join(
+    os.environ.get("XDG_CONFIG_HOME") or os.path.expanduser("~/.config"),
+    "rpiper",
+    "razer-macros.json",
+)
+# Above the logical maximum (0x023c) of the mouse's consumer report, so the
+# kernel drops the usage and no input event reaches applications, while hidraw
+# still carries the raw report. 0x0fff (index 8) is the one measured on the
+# mouse; 0x0ff7-0x0ffe rely on the same range check.
+SPARE_BASE = 0x0FF7
+BUTTONS = 9
+CONSUMER_INTERFACE = 1
+CONSUMER_REPORT = 0x02  # [0x02, usage lo, usage hi, 13 padding bytes]
+
+
+def spare_usage(index):
+    return SPARE_BASE + index
+
+
+def spare_index(usage):
+    """Returns the button index of a spare usage, else None."""
+    index = usage - SPARE_BASE
+    return index if 0 <= index < BUTTONS else None
+
+
+def find_hidraw(interface):
+    """Returns the hidraw node of the mouse's USB interface, or None."""
+    for node in sorted(glob.glob("/sys/class/hidraw/hidraw*")):
+        dev = os.path.realpath(node + "/device")
+        name, parent = os.path.basename(dev), os.path.dirname(dev)
+        if name.startswith("0003:1532:00B9.") and parent.endswith(f":1.{interface}"):
+            return "/dev/" + os.path.basename(node)
+    return None
+
+
+def load_macros():
+    """Returns {button index: [[type, value], ...]}; {} if the file is unusable.
+    Types: 1 = key press, 2 = key release, 3 = wait in ms."""
+    try:
+        with open(MACRO_FILE) as f:
+            return {int(k): v for k, v in json.load(f).items()}
+    except (OSError, ValueError, AttributeError):
+        return {}
+
+
+def play(ui, macro):
+    for type, value in macro:
+        if type == 3:
+            time.sleep(value / 1000)
+        else:
+            ui.write(ecodes.EV_KEY, value, 1 if type == 1 else 0)
+            ui.syn()
+
+
+def handle(ui, report, held):
+    """Plays the macro of a newly pressed spare usage; returns the usage held
+    now, so a repeated report of a held button does not play again."""
+    if len(report) < 3 or report[0] != CONSUMER_REPORT:
+        return held  # keyboard or pointer report of the same interface
+    usage = report[1] | report[2] << 8
+    index = spare_index(usage)
+    if usage != held and index is not None:
+        macro = load_macros().get(index)  # the file may have changed since the start
+        if macro:
+            play(ui, macro)
+    return usage
+
+
+def main():
+    path = find_hidraw(CONSUMER_INTERFACE)
+    if path is None:
+        print("Razer Basilisk V3 X HyperSpeed not found", file=sys.stderr)
+        return 1
+    try:
+        fd = os.open(path, os.O_RDONLY)
+        keys = [c for c in ecodes.KEY if 0 < c <= ecodes.KEY_MAX]
+        ui = UInput({ecodes.EV_KEY: keys}, name="RPiper Razer macros")
+        held = 0
+        while report := os.read(fd, 64):
+            held = handle(ui, report, held)
+        print(f"{path}: device gone", file=sys.stderr)
+    except OSError as e:
+        print(f"{e.filename or path}: {e.strerror}", file=sys.stderr)
+    except UInputError as e:
+        print(f"uinput: {e}", file=sys.stderr)
+    return 1
+
+
+if __name__ == "__main__":
+    sys.exit(main())

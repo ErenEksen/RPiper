@@ -38,7 +38,7 @@ class Window(Gtk.ApplicationWindow):
         """
         Gtk.ApplicationWindow.__init__(self, *args, **kwargs)
 
-        self.set_icon_name("org.freedesktop.Piper")
+        self.set_icon_name("io.github.ereneksen.RPiper")
 
         self._add_perspective(ErrorPerspective(), None)
         try:
@@ -56,7 +56,7 @@ class Window(Gtk.ApplicationWindow):
                 _(
                     f"Incompatible ratbagd API version (required: {e.required_version}, provided: {e.ratbagd_version})"
                 ),
-                _("Please update both piper and libratbag to the latest versions"),
+                _("Please update both rpiper and libratbag to the latest versions"),
             )
             return
 
@@ -99,7 +99,7 @@ class Window(Gtk.ApplicationWindow):
 
     def _on_daemon_disappeared(self, ratbag: Ratbagd) -> None:
         self._present_error_perspective(
-            _("Ooops. ratbagd has disappeared"), _("Please restart Piper")
+            _("Ooops. ratbagd has disappeared"), _("Please restart RPiper")
         )
 
     def _on_device_added(self, ratbag: Ratbagd, device: RatbagdDevice) -> None:

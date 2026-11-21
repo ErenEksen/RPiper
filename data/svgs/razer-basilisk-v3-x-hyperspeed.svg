@@ -1,0 +1,382 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   width="409.2084"
+   height="411.271"
+   viewBox="0 0 409.2084 411.27099"
+   version="1.1"
+   id="svg8"
+   inkscape:version="1.1.1 (3bf5ae0d25, 2021-09-20)"
+   sodipodi:docname="razer-basilisk-v3-x-hyperspeed.svg"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:dc="http://purl.org/dc/elements/1.1/">
+  <defs
+     id="defs2" />
+  <sodipodi:namedview
+     id="base"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageopacity="0.0"
+     inkscape:pageshadow="2"
+     inkscape:zoom="4"
+     inkscape:cx="120.375"
+     inkscape:cy="104"
+     inkscape:document-units="px"
+     inkscape:current-layer="Buttons"
+     inkscape:document-rotation="0"
+     showgrid="true"
+     units="px"
+     borderlayer="true"
+     inkscape:showpageshadow="false"
+     inkscape:pagecheckerboard="false"
+     showguides="true"
+     inkscape:window-width="1920"
+     inkscape:window-height="1011"
+     inkscape:window-x="0"
+     inkscape:window-y="32"
+     inkscape:window-maximized="1"
+     fit-margin-top="20"
+     fit-margin-left="20"
+     fit-margin-bottom="20"
+     fit-margin-right="0"
+     inkscape:snap-grids="true"
+     inkscape:snap-page="true"
+     inkscape:snap-bbox="false"
+     inkscape:snap-bbox-edge-midpoints="false"
+     inkscape:snap-nodes="true"
+     inkscape:snap-bbox-midpoints="false"
+     inkscape:snap-global="true"
+     inkscape:snap-others="true"
+     inkscape:snap-intersection-paths="false"
+     inkscape:object-paths="false"
+     inkscape:snap-smooth-nodes="false"
+     inkscape:snap-midpoints="true"
+     inkscape:object-nodes="true"
+     inkscape:snap-object-midpoints="true"
+     inkscape:snap-center="true"
+     inkscape:snap-to-guides="true"
+     inkscape:snap-text-baseline="true"
+     inkscape:bbox-paths="false"
+     inkscape:bbox-nodes="false">
+    <inkscape:grid
+       type="xygrid"
+       id="grid956"
+       originx="-68.791593"
+       originy="1.2767161" />
+  </sodipodi:namedview>
+  <metadata
+     id="metadata5">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     inkscape:groupmode="layer"
+     id="Device"
+     inkscape:label="Device"
+     transform="translate(-68.791597,-390.00576)"
+     style="display:inline;opacity:1">
+    <path
+       style="fill:#d3d3ce;fill-opacity:1;stroke:#babdb6;stroke-width:4;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       d="m 193.86147,459.71105 c -50.18643,8.30174 -88.84556,53.79188 -101.157492,103.5717 -1.460761,5.90617 0.901241,17.99479 6.264402,22.39981 29.80861,24.48319 70.43974,50.85731 106.82323,71.82322 24.38575,14.05224 61.47,57.88454 92.45406,83.55025 44.06606,36.50222 151.73957,8.49431 145.54594,-71.55025 -2.33308,-30.15207 -8.56364,-58.02716 -50,-97.5 -29.90316,-28.48616 -87.2537,-62.78263 -136.77637,-85.68962 -33.97071,-15.71333 -53.8436,-29.14556 -63.15377,-26.60511 z"
+       id="path1797"
+       sodipodi:nodetypes="csssssssc" />
+    <path
+       id="path4229"
+       style="fill:#d3d3ce;fill-opacity:1;stroke:#babdb6;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="m 95.793557,581.59172 c 0.902274,1.64343 1.950323,3.08527 3.175783,4.09179 29.80861,24.48319 70.43878,50.85636 106.82227,71.82227 24.38575,14.05224 61.46907,57.88507 92.45312,83.55078 9.44689,7.82535 21.82812,12.66301 35.37305,14.68164 C 326.19706,730.45597 295.61703,694.95539 246.07091,652.68547 214.22823,625.51911 144.14433,597.85253 95.793557,581.59172 Z" />
+    <path
+       id="button1"
+       style="fill:#eeeeec;fill-opacity:1;stroke:#babdb6;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="m 195.73106,459.41789 c -0.66527,0.0373 -1.28725,0.13419 -1.86914,0.29297 -19.12814,3.16414 -36.56497,11.7551 -51.52344,23.90234 32.34325,9.5335 65.81738,22.23348 99.31297,34.99353 l 0.28078,-0.015 c 17.63969,-5.0997 34.20221,-6.6354 49.86133,-6.43555 5.77125,0.0737 11.40662,0.39958 16.94141,0.85352 -17.23377,-9.75105 -34.88873,-18.90855 -51.71875,-26.69337 -31.84754,-14.73125 -51.30611,-27.45845 -61.28516,-26.89844 z"
+       sodipodi:nodetypes="sccccscss" />
+    <path
+       id="button8"
+       style="fill:#eeeeec;fill-opacity:1;stroke:#babdb6;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="m 224.24669,511.99992 c -7.67594,6.416 -14.96039,12.73333 -22.07813,19.00977 10.31216,4.06782 20.79529,8.37085 31.43946,12.91601 2.00304,-8.78649 4.70326,-17.30331 8.32421,-25.33398 l -0.28124,0.0156 c -5.80518,-2.21146 -11.60619,-4.41574 -17.4043,-6.60742 z"
+       sodipodi:nodetypes="ccccccc" />
+    <path
+       id="path17168"
+       style="fill:#d3d3ce;fill-opacity:1;stroke:#babdb6;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="m 142.33848,483.6132 c -7.19139,5.83987 -13.81683,12.48855 -19.76367,19.78125 10.05498,2.95066 20.40559,6.22681 31.00781,9.80078 5.81047,-6.60959 12.38252,-13.13481 19.6211,-19.72656 -10.37737,-3.53415 -20.67761,-6.85256 -30.86524,-9.85547 z"
+       sodipodi:nodetypes="ccccc" />
+    <path
+       id="button2"
+       style="fill:#eeeeec;fill-opacity:1;stroke:#babdb6;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="m 179.97716,497.98229 c -5.07504,4.66124 -9.81894,9.29338 -14.18751,13.94922 10.61929,1.1268 20.17301,6.89917 27.25587,13.0918 4.76801,-4.16461 9.64912,-8.3546 14.67578,-12.58399 -8.32591,-7.15908 -16.73494,-13.13039 -27.63623,-14.44646 z"
+       sodipodi:nodetypes="cccccccc" />
+    <path
+       id="button5"
+       style="opacity:1;fill:#eeeeec;fill-opacity:1;stroke:#babdb6;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="m 175.90099,497.72062 c -2.5328,-0.0229 -5.20679,0.21117 -8.03321,0.71289 -4.9905,4.75221 -9.61416,9.49006 -13.8457,14.26954 4.01652,-0.98679 7.95994,-1.17526 11.76757,-0.77149 4.36856,-4.65584 9.11247,-9.28798 14.18751,-13.94922 -1.32178,-0.15557 -2.6768,-0.24904 -4.07617,-0.26172 z" />
+    <path
+       id="button6"
+       style="opacity:1;fill:#eeeeec;fill-opacity:1;stroke:#babdb6;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="m 207.7213,512.43937 c -5.0281,4.2306 -9.91037,8.4221 -14.67969,12.58789 1.5527,1.35773 2.99871,2.73293 4.29883,4.08594 1.60298,0.6239 3.21638,1.2607 4.82812,1.89649 4.37704,-3.85969 8.83132,-7.73854 13.38672,-11.64258 -2.65185,-2.35762 -5.23914,-4.69655 -7.83398,-6.92774 z" />
+    <path
+       id="button4"
+       style="fill:#eeeeec;fill-opacity:1;stroke:#babdb6;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="m 170.92052,610.33781 c -0.43772,1.96313 -0.44264,4.2 0.43359,5.48047 2.23495,3.26602 7.18338,8.68719 12.125,11.625 9.81774,5.83666 21.44938,12.72628 31.25586,17.98047 2.97518,1.59406 11.43068,0.39 14.36914,-2.29297 0.67015,-0.61188 1.18741,-1.15287 1.69141,-1.69141 -16.46259,-10.80543 -37.69153,-21.41655 -59.875,-31.10156 z"
+       sodipodi:nodetypes="csssscc" />
+    <path
+       id="button3"
+       style="fill:#eeeeec;fill-opacity:1;stroke:#babdb6;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="m 230.79552,641.43937 c -0.504,0.53854 -1.02126,1.07953 -1.69141,1.69141 -1.83518,1.67562 -5.8212,2.77404 -9.28125,2.97461 6.66405,6.34921 28.79174,24.08034 44.33789,36.63477 4.11449,3.00299 10.91039,2.01942 16.14648,1.00976 -10.12595,-9.87411 -21.55517,-20.24562 -34.23632,-31.06445 -3.65054,-3.11443 -7.8565,-6.23412 -12.42188,-9.34375 -0.93259,-0.63523 -1.88607,-1.26823 -2.85351,-1.90235 z"
+       sodipodi:nodetypes="cccscccssc" />
+    <path
+       id="button0"
+       style="fill:#eeeeec;fill-opacity:1;stroke:#babdb6;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="m 122.57286,503.39445 c -14.13748,17.3373 -24.5059,38.20388 -29.869147,59.88867 -1.126883,4.55623 0.04363,12.75948 3.089844,18.3086 42.807713,14.39662 102.598253,37.73506 137.855473,61.75 -2.87415,-8.57224 -4.59189,-14.75451 -4.88086,-22.93946 -0.86478,-24.49484 -0.82619,-51.5754 4.84961,-76.47265 -39.54243,-16.88537 -76.95409,-30.53121 -111.04492,-40.53516 z"
+       sodipodi:nodetypes="csccscc" />
+    <path
+       id="path5010"
+       style="fill:#d3d3ce;fill-opacity:1;stroke:#babdb6;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="m 291.79356,512.15617 c -15.65912,-0.19985 -32.22164,1.33585 -49.86133,6.43555 -13.88122,30.78625 -14.33403,68.67121 -13.16406,101.81054 0.28897,8.18495 2.00671,14.36722 4.88086,22.93946 4.56538,3.10963 8.77134,6.22932 12.42188,9.34375 49.54612,42.26992 80.12615,77.7705 87.54687,103.05273 49.63699,7.39642 115.03962,-23.34851 110.17383,-86.23242 -2.33308,-30.15207 -8.56364,-58.02716 -50,-97.5 -19.7335,-18.7984 -51.4532,-40.07219 -84.95508,-58.98828 -5.56711,-0.45825 -11.23673,-0.78723 -17.04297,-0.86133 z"
+       sodipodi:nodetypes="scscscsscs" />
+    <path
+       id="led0"
+       style="fill:#babdb6;fill-opacity:1;stroke:#babdb6;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="m 153.30168,513.09989 c 14.23812,4.79346 28.93964,10.13651 44.03875,16.01329 -11.3776,-11.42223 -26.96893,-20.35212 -43.31827,-16.41018 z"
+       sodipodi:nodetypes="cccc" />
+    <path
+       id="button7"
+       style="fill:#eeeeec;fill-opacity:1;stroke:#babdb6;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="m 132.5,591.5 c 10,5.2 21,10.8 31.5,16.3 -0.6,3.6 -2.4,6.4 -4.6,7.4 -9.4,-4.6 -18.6,-9.4 -27.2,-14.4 -1.6,-1.6 -1.6,-6.2 0.3,-9.3 z" />
+  </g>
+  <g
+     inkscape:groupmode="layer"
+     id="Buttons"
+     inkscape:label="Buttons"
+     style="display:inline"
+     transform="translate(-68.791597,9.994236)">
+    <g
+       id="button1-path">
+      <path
+         id="button1-line"
+         style="color:#000000;overflow:visible;vector-effect:none;fill:none;fill-opacity:1;stroke:#888a85;stroke-width:1;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;marker:none;marker-start:none;marker-mid:none;marker-end:none;paint-order:normal"
+         d="M 195,81.28 L 265,11.28 H 478" />
+      <rect
+         id="button1-square"
+         style="color:#000000;overflow:visible;vector-effect:none;fill:#2e3436;fill-opacity:1;stroke:none;stroke-width:2;stroke-linecap:square;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;marker:none;marker-start:none;marker-mid:none;marker-end:none;paint-order:normal"
+         width="7"
+         height="7"
+         x="191.5"
+         y="77.78" />
+      <rect
+         style="color:#000000;text-align:start;display:inline;overflow:visible;opacity:0.788079;vector-effect:none;fill:#888a85;fill-opacity:1;stroke:none;stroke-linecap:round"
+         id="button1-leader"
+         width="1"
+         height="1"
+         x="477"
+         y="10.78" />
+    </g>
+    <g
+       id="button2-path">
+      <path
+         id="button2-line"
+         style="color:#000000;overflow:visible;vector-effect:none;fill:none;fill-opacity:1;stroke:#888a85;stroke-width:1;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;marker:none;marker-start:none;marker-mid:none;marker-end:none;paint-order:normal"
+         d="M 188,108.28 L 245,51.28 H 478" />
+      <rect
+         id="button2-square"
+         style="color:#000000;overflow:visible;vector-effect:none;fill:#2e3436;fill-opacity:1;stroke:none;stroke-width:2;stroke-linecap:square;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;marker:none;marker-start:none;marker-mid:none;marker-end:none;paint-order:normal"
+         width="7"
+         height="7"
+         x="184.5"
+         y="104.78" />
+      <rect
+         style="color:#000000;text-align:start;display:inline;overflow:visible;opacity:0.788079;vector-effect:none;fill:#888a85;fill-opacity:1;stroke:none;stroke-linecap:round"
+         id="button2-leader"
+         width="1"
+         height="1"
+         x="477"
+         y="50.78" />
+    </g>
+    <g
+       id="button6-path">
+      <path
+         id="button6-line"
+         style="color:#000000;overflow:visible;vector-effect:none;fill:none;fill-opacity:1;stroke:#888a85;stroke-width:1;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;marker:none;marker-start:none;marker-mid:none;marker-end:none;paint-order:normal"
+         d="M 204.5,121.28 L 234.5,91.28 H 478" />
+      <rect
+         id="button6-square"
+         style="color:#000000;overflow:visible;vector-effect:none;fill:#2e3436;fill-opacity:1;stroke:none;stroke-width:2;stroke-linecap:square;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;marker:none;marker-start:none;marker-mid:none;marker-end:none;paint-order:normal"
+         width="7"
+         height="7"
+         x="201"
+         y="117.78" />
+      <rect
+         style="color:#000000;text-align:start;display:inline;overflow:visible;opacity:0.788079;vector-effect:none;fill:#888a85;fill-opacity:1;stroke:none;stroke-linecap:round"
+         id="button6-leader"
+         width="1"
+         height="1"
+         x="477"
+         y="90.78" />
+    </g>
+    <g
+       id="button8-path">
+      <path
+         id="button8-line"
+         style="color:#000000;overflow:visible;vector-effect:none;fill:none;fill-opacity:1;stroke:#888a85;stroke-width:1;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;marker:none;marker-start:none;marker-mid:none;marker-end:none;paint-order:normal"
+         d="M 224.5,131.28 L 224.5,131.28 H 478" />
+      <rect
+         id="button8-square"
+         style="color:#000000;overflow:visible;vector-effect:none;fill:#2e3436;fill-opacity:1;stroke:none;stroke-width:2;stroke-linecap:square;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;marker:none;marker-start:none;marker-mid:none;marker-end:none;paint-order:normal"
+         width="7"
+         height="7"
+         x="221"
+         y="127.78" />
+      <rect
+         style="color:#000000;text-align:start;display:inline;overflow:visible;opacity:0.788079;vector-effect:none;fill:#888a85;fill-opacity:1;stroke:none;stroke-linecap:round"
+         id="button8-leader"
+         width="1"
+         height="1"
+         x="477"
+         y="130.78" />
+    </g>
+    <g
+       id="button0-path">
+      <path
+         id="button0-line"
+         style="color:#000000;overflow:visible;vector-effect:none;fill:none;fill-opacity:1;stroke:#888a85;stroke-width:1;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;marker:none;marker-start:none;marker-mid:none;marker-end:none;paint-order:normal"
+         d="M 128,123.28 L 120,131.28 H 68.7916" />
+      <rect
+         id="button0-square"
+         style="color:#000000;overflow:visible;vector-effect:none;fill:#2e3436;fill-opacity:1;stroke:none;stroke-width:2;stroke-linecap:square;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;marker:none;marker-start:none;marker-mid:none;marker-end:none;paint-order:normal"
+         width="7"
+         height="7"
+         x="124.5"
+         y="119.78" />
+      <rect
+         style="color:#000000;text-align:end;display:inline;overflow:visible;opacity:0.788079;vector-effect:none;fill:#888a85;fill-opacity:1;stroke:none;stroke-linecap:round"
+         id="button0-leader"
+         width="1"
+         height="1"
+         x="68.7916"
+         y="130.78" />
+    </g>
+    <g
+       id="button5-path">
+      <path
+         id="button5-line"
+         style="color:#000000;overflow:visible;vector-effect:none;fill:none;fill-opacity:1;stroke:#888a85;stroke-width:1;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;marker:none;marker-start:none;marker-mid:none;marker-end:none;paint-order:normal"
+         d="M 164.5,106.28 L 99.5,171.28 H 68.7916" />
+      <rect
+         id="button5-square"
+         style="color:#000000;overflow:visible;vector-effect:none;fill:#2e3436;fill-opacity:1;stroke:none;stroke-width:2;stroke-linecap:square;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;marker:none;marker-start:none;marker-mid:none;marker-end:none;paint-order:normal"
+         width="7"
+         height="7"
+         x="161"
+         y="102.78" />
+      <rect
+         style="color:#000000;text-align:end;display:inline;overflow:visible;opacity:0.788079;vector-effect:none;fill:#888a85;fill-opacity:1;stroke:none;stroke-linecap:round"
+         id="button5-leader"
+         width="1"
+         height="1"
+         x="68.7916"
+         y="170.78" />
+    </g>
+    <g
+       id="button7-path">
+      <path
+         id="button7-line"
+         style="color:#000000;overflow:visible;vector-effect:none;fill:none;fill-opacity:1;stroke:#888a85;stroke-width:1;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;marker:none;marker-start:none;marker-mid:none;marker-end:none;paint-order:normal"
+         d="M 148,205 L 101.72,251.28 H 68.7916" />
+      <rect
+         id="button7-square"
+         style="color:#000000;overflow:visible;vector-effect:none;fill:#2e3436;fill-opacity:1;stroke:none;stroke-width:2;stroke-linecap:square;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;marker:none;marker-start:none;marker-mid:none;marker-end:none;paint-order:normal"
+         width="7"
+         height="7"
+         x="144.5"
+         y="201.5" />
+      <rect
+         style="color:#000000;text-align:end;display:inline;overflow:visible;opacity:0.788079;vector-effect:none;fill:#888a85;fill-opacity:1;stroke:none;stroke-linecap:round"
+         id="button7-leader"
+         width="1"
+         height="1"
+         x="68.7916"
+         y="250.78" />
+    </g>
+    <g
+       id="button4-path">
+      <path
+         id="button4-line"
+         style="color:#000000;overflow:visible;vector-effect:none;fill:none;fill-opacity:1;stroke:#888a85;stroke-width:1;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;marker:none;marker-start:none;marker-mid:none;marker-end:none;paint-order:normal"
+         d="M 199.5,231.28 L 139.5,291.28 H 68.7916" />
+      <rect
+         id="button4-square"
+         style="color:#000000;overflow:visible;vector-effect:none;fill:#2e3436;fill-opacity:1;stroke:none;stroke-width:2;stroke-linecap:square;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;marker:none;marker-start:none;marker-mid:none;marker-end:none;paint-order:normal"
+         width="7"
+         height="7"
+         x="196"
+         y="227.78" />
+      <rect
+         style="color:#000000;text-align:end;display:inline;overflow:visible;opacity:0.788079;vector-effect:none;fill:#888a85;fill-opacity:1;stroke:none;stroke-linecap:round"
+         id="button4-leader"
+         width="1"
+         height="1"
+         x="68.7916"
+         y="290.78" />
+    </g>
+    <g
+       id="button3-path">
+      <path
+         id="button3-line"
+         style="color:#000000;overflow:visible;vector-effect:none;fill:none;fill-opacity:1;stroke:#888a85;stroke-width:1;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;marker:none;marker-start:none;marker-mid:none;marker-end:none;paint-order:normal"
+         d="M 249.5,261.28 L 179.5,331.28 H 68.7916" />
+      <rect
+         id="button3-square"
+         style="color:#000000;overflow:visible;vector-effect:none;fill:#2e3436;fill-opacity:1;stroke:none;stroke-width:2;stroke-linecap:square;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;marker:none;marker-start:none;marker-mid:none;marker-end:none;paint-order:normal"
+         width="7"
+         height="7"
+         x="246"
+         y="257.78" />
+      <rect
+         style="color:#000000;text-align:end;display:inline;overflow:visible;opacity:0.788079;vector-effect:none;fill:#888a85;fill-opacity:1;stroke:none;stroke-linecap:round"
+         id="button3-leader"
+         width="1"
+         height="1"
+         x="68.7916"
+         y="330.78" />
+    </g>
+  </g>
+  <g
+     inkscape:groupmode="layer"
+     id="LEDs"
+     inkscape:label="LEDs"
+     style="display:inline"
+     transform="translate(-68.791597,9.994236)">
+    <g
+       id="led0-path">
+      <path
+         id="led0-line"
+         style="color:#000000;overflow:visible;vector-effect:none;fill:none;fill-opacity:1;stroke:#888a85;stroke-width:1;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;marker:none;marker-start:none;marker-mid:none;marker-end:none;paint-order:normal"
+         d="M 180,120.5 L 89.22,211.28 H 68.7916" />
+      <rect
+         id="led0-square"
+         style="color:#000000;overflow:visible;vector-effect:none;fill:#2e3436;fill-opacity:1;stroke:none;stroke-width:2;stroke-linecap:square;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;marker:none;marker-start:none;marker-mid:none;marker-end:none;paint-order:normal"
+         width="7"
+         height="7"
+         x="176.5"
+         y="117" />
+      <rect
+         style="color:#000000;text-align:end;display:inline;overflow:visible;opacity:0.788079;vector-effect:none;fill:#888a85;fill-opacity:1;stroke:none;stroke-linecap:round"
+         id="led0-leader"
+         width="1"
+         height="1"
+         x="68.7916"
+         y="210.78" />
+    </g>
+  </g>
+</svg>

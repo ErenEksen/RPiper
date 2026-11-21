@@ -9,10 +9,10 @@ issue](https://github.com/libratbag/piper/issues/new).
 New or updated translations are always welcome. To start a new translation, run:
 
 	$ meson translation-build
-	$ ninja -C translation-build piper-pot
+	$ ninja -C translation-build rpiper-pot
 	# Now you can optionally remove the build directory
 	$ rm -rf translation-build
-	$ cp po/piper.pot po/$lang.po
+	$ cp po/rpiper.pot po/$lang.po
 
 where `$lang` is the language code of your target language, e.g. `nl` for Dutch
 or `en_GB` for British English. Edit the
@@ -24,7 +24,7 @@ fill in the information in the header!
 To update an existing translation, run:
 
 	$ meson translation-build
-	$ ninja -C translation-build piper-update-po
+	$ ninja -C translation-build rpiper-update-po
 	# Now you can optionally remove the build directory
 	$ rm -rf translation-build
 
