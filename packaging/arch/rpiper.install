@@ -1,0 +1,10 @@
+post_install() {
+  echo 'RPiper: udev rules were installed. Re-plug the mouse USB receiver once'
+  echo '(or run: sudo udevadm trigger) so the access rules apply.'
+  echo 'Macro service: systemctl --user enable --now rpiper-razer-macros.service'
+  echo '(the app also starts it automatically the first time a macro is applied).'
+}
+
+post_upgrade() {
+  post_install
+}

@@ -1,0 +1,22 @@
+# Builds RPiper from the local checkout (two directories up), including uncommitted changes.
+pkgname=rpiper
+pkgver=0.8
+pkgrel=1
+pkgdesc='Fork of Piper (mouse configuration tool) with Razer support'
+arch=(any)
+url='https://github.com/ErenEksen/RPiper'
+license=(GPL-2.0-or-later)
+depends=(gtk3 python python-gobject python-evdev python-lxml python-cairo librsvg)
+makedepends=(meson gettext glib2 python-lxml)
+optdepends=('libratbag: support for non-Razer mice through ratbagd')
+install=rpiper.install
+
+build() {
+  # runtime checks would demand ratbagd at build time; it is only optional here
+  PYTHONDONTWRITEBYTECODE=1 arch-meson "$startdir/../.." build -Druntime-dependency-checks=false
+  meson compile -C build
+}
+
+package() {
+  PYTHONDONTWRITEBYTECODE=1 meson install -C build --destdir "$pkgdir"
+}
