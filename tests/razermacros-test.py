@@ -10,7 +10,8 @@ from unittest import mock
 
 from evdev import ecodes
 
-from rpiper import razermacros
+from rpiper import razer, razermacros
+from rpiper.ratbagd import RatbagDeviceError
 
 # Raw hidraw reports measured on 1532:00b9 with a button bound to consumer
 # usage 0x0fff (interface 1), and to keyboard usage 0x68 (interface 2).
@@ -130,14 +131,23 @@ class RazerMacrosTest(unittest.TestCase):
         self.write({"8": [[1, 30], [2, 30]]})
         ui = FakeUInput()
         reads = [PRESS, RELEASE, OSError(19, "No such device")]
+        # Quiet, a report, quiet (mouse asleep), then two reports.
+        selects = [[], [99], [], [99], [99]]
+        asleep = RatbagDeviceError("asleep")
         patch = mock.patch.object
         with patch(razermacros, "find_hidraw", return_value="/dev/hidraw13"):
             with patch(os, "open", return_value=99), patch(os, "read") as read:
                 read.side_effect = reads
-                with patch(razermacros, "UInput", return_value=ui) as uinput:
-                    with mock.patch("sys.stderr", new_callable=io.StringIO) as err:
-                        self.assertEqual(razermacros.main(), 1)
+                with patch(razermacros.select, "select") as select, patch(
+                    razer, "reassert", side_effect=[None, None, asleep, None]
+                ) as reassert:
+                    select.side_effect = [(s, [], []) for s in selects]
+                    with patch(razermacros, "UInput", return_value=ui) as uinput:
+                        with mock.patch("sys.stderr", new_callable=io.StringIO) as err:
+                            self.assertEqual(razermacros.main(), 1)
         self.assertEqual(err.getvalue(), "/dev/hidraw13: No such device\n")
+        # At start and after each quiet wait; a sleeping mouse is no error.
+        self.assertEqual(reassert.call_count, 3)
         self.assertEqual(len(ui.calls), 4)
         keys = uinput.call_args.args[0][ecodes.EV_KEY]
         self.assertIn(ecodes.KEY_A, keys)

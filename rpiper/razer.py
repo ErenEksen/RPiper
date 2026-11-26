@@ -3,6 +3,7 @@
 """Talks to a Razer Basilisk V3 X HyperSpeed (1532:00b9) directly over hidraw
 and presents it through the Ratbagd* classes, so the UI needs no changes."""
 
+import contextlib
 import fcntl
 import json
 import os
@@ -180,6 +181,35 @@ def store_macro(index, macro):
     write_json(MACRO_FILE, macros)
 
 
+@contextlib.contextmanager
+def macro_lock():
+    """Holds the macro file and the button writes that follow it still against
+    the other process (RPiper or the macro service) until the block ends."""
+    path = os.path.dirname(MACRO_FILE)
+    os.makedirs(path, exist_ok=True)
+    fd = os.open(path, os.O_RDONLY)  # the file itself is replaced on each write
+    try:
+        fcntl.flock(fd, fcntl.LOCK_EX)
+        yield
+    finally:
+        os.close(fd)
+
+
+def reassert(q):
+    """Rebinds each button with a stored macro that the mouse no longer maps to
+    its spare usage (it dropped the mapping); reads first, so an intact button
+    costs no write."""
+    with macro_lock():  # else an Apply in between would be undone
+        macros = load_macros()
+        for index in macros.keys() & range(len(BUTTON_IDS)):
+            fn, data = encode(Action.MACRO, macros[index], index)
+            for slot in (0x01, 0x00):  # the stored profile, then the live one
+                args = [slot, BUTTON_IDS[index], 0x00]
+                a = q(0x02, 0x8C, 0x0A, args)
+                if a[3] != fn or list(a[5 : 5 + len(data)]) != data:
+                    q(0x02, 0x0C, 0x0A, [*args, fn, len(data), *data])
+
+
 def decode(fn, data, index, macros):
     """Returns the Piper mapping (action type, value) of a device function."""
     mods, usage = data[0], data[1]
@@ -354,6 +384,7 @@ class RazerDevice(_Local, RatbagdDevice):
 
         rate = RATES.get(q(0x00, 0x85, 0x01)[0], 0)
 
+        reassert(q)  # the mouse may have dropped a macro button since
         macros = load_macros()
         buttons = []
         for i, id in enumerate(BUTTON_IDS):
@@ -393,15 +424,13 @@ class RazerDevice(_Local, RatbagdDevice):
                     rejected = True
                     continue
                 # The macro must exist before the button sends its key, and a
-                # stale one is harmless, so store before and remove after.
+                # stale one would be rewritten by reassert(), so update it first.
                 macro = host_macro(*b._props["Mapping"])
-                if macro is not None:
+                with macro_lock():
                     store_macro(b.index, macro)
-                for slot in (0x01, 0x00):  # the stored profile, then the live one
-                    args = [slot, BUTTON_IDS[b.index], 0x00, fn, len(data), *data]
-                    q(0x02, 0x0C, 0x0A, args)
-                if macro is None:
-                    store_macro(b.index, None)
+                    for slot in (0x01, 0x00):  # the stored profile, then the live one
+                        args = [slot, BUTTON_IDS[b.index], 0x00, fn, len(data), *data]
+                        q(0x02, 0x0C, 0x0A, args)
                 b._saved = dict(b._props)
 
             resolutions = profile.resolutions

@@ -10,6 +10,7 @@ evdev nodes, which hides their events from every other reader."""
 import glob
 import json
 import os
+import select
 import sys
 import time
 
@@ -28,6 +29,10 @@ SPARE_BASE = 0x0FF7
 BUTTONS = 9
 CONSUMER_INTERFACE = 1
 CONSUMER_REPORT = 0x02  # [0x02, usage lo, usage hi, 13 padding bytes]
+# shortcut: polls the mouse, so a mapping it dropped while the receiver stayed
+# plugged in comes back up to a minute late; use a receiver "mouse connected"
+# notification instead if one is found in the protocol
+RECHECK_SECONDS = 60
 
 
 def spare_usage(index):
@@ -84,17 +89,29 @@ def handle(ui, report, held):
 
 
 def main():
-    path = find_hidraw(CONSUMER_INTERFACE)
-    if path is None:
+    from .razer import RatbagDeviceError, Transport, reassert  # razer imports us
+
+    path, control = find_hidraw(CONSUMER_INTERFACE), find_hidraw(0)
+    if path is None or control is None:
         print("Razer Basilisk V3 X HyperSpeed not found", file=sys.stderr)
         return 1
     try:
         fd = os.open(path, os.O_RDONLY)
+        q = Transport(os.open(control, os.O_RDWR)).query
         keys = [c for c in ecodes.KEY if 0 < c <= ecodes.KEY_MAX]
         ui = UInput({ecodes.EV_KEY: keys}, name="RPiper Razer macros")
-        held = 0
-        while report := os.read(fd, 64):
-            held = handle(ui, report, held)
+        held, ready = 0, []
+        while True:
+            if not ready:  # at start, then after each quiet minute
+                try:
+                    reassert(q)
+                except RatbagDeviceError:
+                    pass  # mouse asleep or off: the next check retries
+            ready = select.select([fd], [], [], RECHECK_SECONDS)[0]
+            if ready:
+                if not (report := os.read(fd, 64)):
+                    break
+                held = handle(ui, report, held)
         print(f"{path}: device gone", file=sys.stderr)
     except OSError as e:
         print(f"{e.filename or path}: {e.strerror}", file=sys.stderr)
