@@ -67,12 +67,17 @@ class ButtonDialog(Gtk.Dialog):
     # Gdk uses an offset of 8 from the keycodes defined in linux/input.h.
     _XORG_KEYCODE_OFFSET = 8
 
+    apply: Gtk.Button = Gtk.Template.Child()  # type: ignore
     empty_search_placeholder: Gtk.Box = Gtk.Template.Child()  # type: ignore
+    entry_command: Gtk.Entry = Gtk.Template.Child()  # type: ignore
+    label_command: Gtk.Label = Gtk.Template.Child()  # type: ignore
     label_keystroke: Gtk.Label = Gtk.Template.Child()  # type: ignore
     label_preview: Gtk.Label = Gtk.Template.Child()  # type: ignore
     listbox: Gtk.ListBox = Gtk.Template.Child()  # type: ignore
     radio_left_handed: Gtk.RadioButton = Gtk.Template.Child()  # type: ignore
     radio_right_handed: Gtk.RadioButton = Gtk.Template.Child()  # type: ignore
+    row_command: Gtk.ListBoxRow = Gtk.Template.Child()  # type: ignore
+    row_command_label: Gtk.Label = Gtk.Template.Child()  # type: ignore
     row_keystroke: Gtk.ListBoxRow = Gtk.Template.Child()  # type: ignore
     row_keystroke_label: Gtk.Label = Gtk.Template.Child()  # type: ignore
     search_bar: Gtk.SearchBar = Gtk.Template.Child()  # type: ignore
@@ -110,6 +115,8 @@ class ButtonDialog(Gtk.Dialog):
             self._mapping = self._button.key
         elif self._action_type == RatbagdButton.ActionType.SPECIAL:
             self._mapping = self._button.special
+        elif self._action_type == RatbagdButton.ActionType.COMMAND:
+            self._mapping = self._button.command
         else:
             self._mapping = -1
 
@@ -186,6 +193,13 @@ class ButtonDialog(Gtk.Dialog):
         if self._action_type == RatbagdButton.ActionType.NONE:
             self.listbox.select_row(row)
 
+        # Only RPiper's own backend has a host listener that can run commands.
+        command = RatbagdButton.ActionType.COMMAND
+        self.row_command.set_visible(command in self._button.action_types)
+        if self._action_type == command:
+            self.label_command.set_label(self._mapping)
+            self.entry_command.set_text(self._mapping)
+
         if self._action_type == RatbagdButton.ActionType.MACRO:
             self._create_current_macro(macro=self._mapping)
         elif self._action_type == RatbagdButton.ActionType.KEY:
@@ -208,6 +222,9 @@ class ButtonDialog(Gtk.Dialog):
     def _listbox_header_func(self, row: ButtonRow, before: ButtonRow) -> None:
         # Adds headers to those rows where a new category starts, to separate
         # different kinds of mappings.
+        if row == self.row_command:
+            row.set_header(None)  # grouped with the keystroke row above it
+            return
         if row == self.row_keystroke:
             separator = Gtk.Separator(
                 orientation=Gtk.Orientation.HORIZONTAL, margin_top=18
@@ -241,10 +258,12 @@ class ButtonDialog(Gtk.Dialog):
         if self.search_entry.get_text_length() == 0:
             return True
 
-        if row is not self.row_keystroke:
-            description = row.description.casefold()
-        else:
+        if row is self.row_keystroke:
             description = self.row_keystroke_label.get_label().casefold()
+        elif row is self.row_command:
+            description = self.row_command_label.get_label().casefold()
+        else:
+            description = row.description.casefold()
         search = self.search_entry.get_text().casefold()
 
         return all(term in description for term in search.split(" "))
@@ -293,6 +312,8 @@ class ButtonDialog(Gtk.Dialog):
         # Overrides Gtk.Window's standard key press event callback, so we can
         # capture the pressed buttons in capture mode. If we're not in capture
         # mode, we trigger the search bar on any key press.
+        if self.stack.get_visible_child_name() == "command":
+            return Gtk.Window.do_key_press_event(self, event)  # typing the command
         if self.stack.get_visible_child_name() != "capture":
             if self.search_bar.handle_event(event) == Gdk.EVENT_STOP:
                 return Gdk.EVENT_STOP
@@ -367,6 +388,10 @@ class ButtonDialog(Gtk.Dialog):
             else:
                 self._create_current_macro()
                 self.stack.set_visible_child_name("capture")
+        elif row == self.row_command:
+            self.stack.set_visible_child_name("command")
+            self._on_command_changed(self.entry_command)
+            self.entry_command.grab_focus()
         else:
             self._action_type = row._action_type
             self._mapping = row._value
@@ -376,7 +401,15 @@ class ButtonDialog(Gtk.Dialog):
         if self.stack.get_visible_child_name() == "capture":
             assert self._current_macro is not None
             self._current_macro.accept()
+        elif self.stack.get_visible_child_name() == "command":
+            self._action_type = RatbagdButton.ActionType.COMMAND
+            self._mapping = self.entry_command.get_text()
         return Gdk.EVENT_PROPAGATE
+
+    @Gtk.Template.Callback("_on_command_changed")
+    def _on_command_changed(self, entry: Gtk.Entry) -> None:
+        # An empty command is no mapping, so it cannot be applied.
+        self.apply.set_sensitive(bool(entry.get_text().strip()))
 
     @Gtk.Template.Callback("_on_primary_mode_toggled")
     def _on_primary_mode_toggled(self, toggle: Gtk.RadioButton) -> None:
@@ -394,7 +427,7 @@ class ButtonDialog(Gtk.Dialog):
         return self._action_type
 
     @GObject.Property
-    def mapping(self) -> Union[RatbagdMacro, int]:
+    def mapping(self) -> Union[RatbagdMacro, int, str]:
         """The mapping as last set in the dialog. Note that the type depends on
         action_type, and as such you should check that before using this
         property. A custom value of ButtonDialog.LEFT_HANDED_MODE means that

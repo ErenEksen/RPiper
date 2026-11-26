@@ -107,6 +107,8 @@ class ButtonsPage(Gtk.Box):
             label = _(RatbagdButton.SPECIAL_DESCRIPTION[ratbagd_button.special])
         elif action_type == RatbagdButton.ActionType.MACRO:
             label = _("Macro: {}").format(str(ratbagd_button.macro))
+        elif action_type == RatbagdButton.ActionType.COMMAND:
+            label = _("Command: {}").format(ratbagd_button.command)
         elif action_type == RatbagdButton.ActionType.KEY:
             label = _("Key: {}").format(evcode_to_str(ratbagd_button.key))
         elif action_type == RatbagdButton.ActionType.NONE:
@@ -165,6 +167,8 @@ class ButtonsPage(Gtk.Box):
                     ratbagd_button.mapping = dialog.mapping
             elif dialog.action_type == RatbagdButton.ActionType.MACRO:
                 ratbagd_button.macro = dialog.mapping
+            elif dialog.action_type == RatbagdButton.ActionType.COMMAND:
+                ratbagd_button.command = dialog.mapping
             elif dialog.action_type == RatbagdButton.ActionType.KEY:
                 ratbagd_button.key = dialog.mapping
             elif dialog.action_type == RatbagdButton.ActionType.SPECIAL:

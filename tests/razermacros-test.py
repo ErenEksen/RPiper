@@ -79,6 +79,20 @@ class RazerMacrosTest(unittest.TestCase):
             [("write", K, 30, 1), ("syn",), ("write", K, 30, 0), ("syn",)],
         )
 
+    def test_play_command(self):
+        ui = FakeUInput()
+        with mock.patch.object(razermacros.subprocess, "run") as run:
+            razermacros.play(ui, [[1, 30], [4, "echo hi > /tmp/x"], [2, 30]])
+            run.side_effect = FileNotFoundError(2, "systemd-run")
+            with mock.patch("sys.stderr", new_callable=io.StringIO) as err:
+                razermacros.play(ui, [[4, "true"]])  # logged, not raised
+        cmd = run.call_args_list[0].args[0]
+        self.assertEqual(cmd[:2], ["systemd-run", "--user"])
+        self.assertIn("--no-block", cmd)
+        self.assertEqual(cmd[-2:], ["-c", "echo hi > /tmp/x"])
+        self.assertEqual(len(ui.calls), 4)
+        self.assertEqual(err.getvalue().count("\n"), 1)
+
     def test_spare_usage(self):
         usages = [razermacros.spare_usage(i) for i in range(9)]
         self.assertEqual(usages[8], 0x0FFF)

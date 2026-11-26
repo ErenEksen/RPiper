@@ -160,6 +160,16 @@ class MappingTest(unittest.TestCase):
             data = bytes(data).ljust(5, b"\0")
             self.assertEqual(razer.decode(fn, data, 3, macros), mapping, mapping)
 
+    def test_command(self):
+        command = "notify-send 'a b'"
+        fn, data = razer.encode(Action.COMMAND, command, 3)
+        self.assertEqual((fn, data), (0x0A, [0x0F, 0xFA]))
+        stored = [list(e) for e in razer.host_macro(Action.COMMAND, command)]
+        self.assertEqual(stored, [[razer.COMMAND, command]])
+        data = bytes(data).ljust(5, b"\0")
+        mapping = razer.decode(fn, data, 3, {3: stored})
+        self.assertEqual(mapping, (Action.COMMAND, command))
+
     def test_macro_all_buttons(self):
         macro = [(1, ecodes.KEY_A), (2, ecodes.KEY_A)]
         blocks = set()
@@ -425,6 +435,25 @@ class DeviceTest(unittest.TestCase):
         t.sent.clear()
         razer.reassert(t.query)
         self.assertEqual(t.sent, [])
+
+    def test_command_button(self):
+        p = self.profile
+        p.buttons[8].command = "true"
+        self.device.commit()
+        self.assertEqual(razer.load_macros(), {8: [[razer.COMMAND, "true"]]})
+        self.popen.assert_called_once()  # the macro service plays commands too
+        t = FakeTransport()
+        t.buttons.update(self.t.buttons)  # what the commit mapped
+        device = razer.RazerDevice(t)
+        self.assertEqual(t.sent, [])  # bound already, so reassert writes nothing
+        self.assertEqual(device.profiles[0].buttons[8].command, "true")
+        t.buttons.clear()  # the mouse dropped it: rebound like a macro
+        razer.reassert(t.query)
+        spare = [0x60, 0x00, 0x0A, 0x02, 0x0F, 0xFF]
+        self.assertEqual(t.sent[-1], (0x02, 0x0C, 0x0A, [0, *spare]))
+        p.buttons[8].special = Special.RESOLUTION_CYCLE_UP
+        self.device.commit()
+        self.assertEqual(razer.load_macros(), {})
 
     def test_reassert_waits_for_apply(self):
         razer.store_macro(8, [(1, ecodes.KEY_A), (2, ecodes.KEY_A)])
