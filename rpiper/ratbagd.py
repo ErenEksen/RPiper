@@ -821,6 +821,8 @@ class RatbagdButton(_RatbagdDBus):
         SPECIAL = 2
         KEY = 3
         MACRO = 4
+        # RPiper only, runs a shell command on the host; far from libratbag's values.
+        COMMAND = 1001
 
     class ActionSpecial(IntEnum):
         INVALID = -1
@@ -972,6 +974,21 @@ class RatbagdButton(_RatbagdDBus):
     def key(self, key):
         key = GLib.Variant("u", key)
         self._set_dbus_property("Mapping", "(uv)", (RatbagdButton.ActionType.KEY, key))
+
+    @GObject.Property
+    def command(self):
+        """The shell command run on a press, or None if not mapped to one."""
+        type, command = self._mapping()
+        if type != RatbagdButton.ActionType.COMMAND:
+            return None
+        return command
+
+    @command.setter
+    def command(self, command):
+        command = GLib.Variant("s", command)
+        self._set_dbus_property(
+            "Mapping", "(uv)", (RatbagdButton.ActionType.COMMAND, command)
+        )
 
     @GObject.Property
     def action_type(self):

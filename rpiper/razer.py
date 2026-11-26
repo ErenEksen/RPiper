@@ -3,6 +3,7 @@
 """Talks to a Razer Basilisk V3 X HyperSpeed (1532:00b9) directly over hidraw
 and presents it through the Ratbagd* classes, so the UI needs no changes."""
 
+import contextlib
 import fcntl
 import json
 import os
@@ -26,7 +27,7 @@ from .ratbagd import (
     RatbagDeviceType,
     RatbagError,
 )
-from .razermacros import MACRO_FILE, find_hidraw, load_macros, spare_usage
+from .razermacros import COMMAND, MACRO_FILE, find_hidraw, load_macros, spare_usage
 
 LED_FILE = os.path.join(os.path.dirname(MACRO_FILE), "razer-led.json")
 
@@ -153,7 +154,7 @@ def encode(action_type, value, index):
         if usage >= 0xE0:  # a lone modifier goes into the mask byte
             return 0x02, [1 << (usage - 0xE0), 0x00]
         return 0x02, [0x00, usage]
-    if action_type in (Action.KEY, Action.MACRO):
+    if action_type in (Action.KEY, Action.MACRO, Action.COMMAND):
         # No macro memory on the mouse: it sends a spare consumer usage and
         # razermacros plays host_macro() stored under the button index.
         return 0x0A, list(spare_usage(index).to_bytes(2, "big"))
@@ -165,6 +166,8 @@ def host_macro(action_type, value):
     to spare_usage(index), or None if the mouse handles the mapping itself."""
     if action_type == Action.MACRO:
         return value
+    if action_type == Action.COMMAND:
+        return [(COMMAND, value)]
     if action_type == Action.KEY and value not in CONSUMER and value not in USAGE:
         return [(1, value), (2, value)]
     return None
@@ -180,6 +183,35 @@ def store_macro(index, macro):
     write_json(MACRO_FILE, macros)
 
 
+@contextlib.contextmanager
+def macro_lock():
+    """Holds the macro file and the button writes that follow it still against
+    the other process (RPiper or the macro service) until the block ends."""
+    path = os.path.dirname(MACRO_FILE)
+    os.makedirs(path, exist_ok=True)
+    fd = os.open(path, os.O_RDONLY)  # the file itself is replaced on each write
+    try:
+        fcntl.flock(fd, fcntl.LOCK_EX)
+        yield
+    finally:
+        os.close(fd)
+
+
+def reassert(q):
+    """Rebinds each button with a stored macro that the mouse no longer maps to
+    its spare usage (it dropped the mapping); reads first, so an intact button
+    costs no write."""
+    with macro_lock():  # else an Apply in between would be undone
+        macros = load_macros()
+        for index in macros.keys() & range(len(BUTTON_IDS)):
+            fn, data = encode(Action.MACRO, macros[index], index)
+            for slot in (0x01, 0x00):  # the stored profile, then the live one
+                args = [slot, BUTTON_IDS[index], 0x00]
+                a = q(0x02, 0x8C, 0x0A, args)
+                if a[3] != fn or list(a[5 : 5 + len(data)]) != data:
+                    q(0x02, 0x0C, 0x0A, [*args, fn, len(data), *data])
+
+
 def decode(fn, data, index, macros):
     """Returns the Piper mapping (action type, value) of a device function."""
     mods, usage = data[0], data[1]
@@ -191,6 +223,8 @@ def decode(fn, data, index, macros):
     if (fn, data[0]) in DECODE_SPECIAL:
         return Action.SPECIAL, DECODE_SPECIAL[(fn, data[0])]
     if fn == 0x0A and mods << 8 | usage == spare_usage(index) and macro is not None:
+        if len(macro) == 1 and macro[0][0] == COMMAND:
+            return Action.COMMAND, macro[0][1]
         return Action.MACRO, [tuple(e) for e in macro]
     if fn == 0x02 and mods == 0 and usage in KEYCODE:
         return Action.KEY, KEYCODE[usage]
@@ -354,6 +388,7 @@ class RazerDevice(_Local, RatbagdDevice):
 
         rate = RATES.get(q(0x00, 0x85, 0x01)[0], 0)
 
+        reassert(q)  # the mouse may have dropped a macro button since
         macros = load_macros()
         buttons = []
         for i, id in enumerate(BUTTON_IDS):
@@ -393,15 +428,13 @@ class RazerDevice(_Local, RatbagdDevice):
                     rejected = True
                     continue
                 # The macro must exist before the button sends its key, and a
-                # stale one is harmless, so store before and remove after.
+                # stale one would be rewritten by reassert(), so update it first.
                 macro = host_macro(*b._props["Mapping"])
-                if macro is not None:
+                with macro_lock():
                     store_macro(b.index, macro)
-                for slot in (0x01, 0x00):  # the stored profile, then the live one
-                    args = [slot, BUTTON_IDS[b.index], 0x00, fn, len(data), *data]
-                    q(0x02, 0x0C, 0x0A, args)
-                if macro is None:
-                    store_macro(b.index, None)
+                    for slot in (0x01, 0x00):  # the stored profile, then the live one
+                        args = [slot, BUTTON_IDS[b.index], 0x00, fn, len(data), *data]
+                        q(0x02, 0x0C, 0x0A, args)
                 b._saved = dict(b._props)
 
             resolutions = profile.resolutions

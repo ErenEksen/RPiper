@@ -5,6 +5,7 @@ import json
 import os
 import shutil
 import tempfile
+import threading
 import unittest
 from unittest import mock
 
@@ -40,6 +41,7 @@ class FakeTransport:
     def __init__(self):
         self.sent = []
         self.fail_after = None
+        self.buttons = {}  # (slot, id): what a write mapped, else BUTTONS
 
     def query(self, cls, cid, size, args=()):
         if cid & 0x80:
@@ -48,11 +50,13 @@ class FakeTransport:
                 (0x04, 0x86): STAGES,
                 (0x00, 0x85): b"\x01",
                 (0x0F, 0x84): b"\x01\x01\xff",
-            }.get((cls, cid)) or BUTTONS[args[1]]
+            }.get((cls, cid)) or self.buttons.get(tuple(args[:2]), BUTTONS[args[1]])
             return reply.ljust(80, b"\0")
         if self.fail_after is not None and len(self.sent) >= self.fail_after:
             raise RatbagDeviceError("fake failure")
         self.sent.append((cls, cid, size, list(args)))
+        if (cls, cid) == (0x02, 0x0C):
+            self.buttons[tuple(args[:2])] = bytes([0, *args[1:]])
         return bytes(80)
 
 
@@ -155,6 +159,16 @@ class MappingTest(unittest.TestCase):
             self.assertEqual((fn, data), block, mapping)
             data = bytes(data).ljust(5, b"\0")
             self.assertEqual(razer.decode(fn, data, 3, macros), mapping, mapping)
+
+    def test_command(self):
+        command = "notify-send 'a b'"
+        fn, data = razer.encode(Action.COMMAND, command, 3)
+        self.assertEqual((fn, data), (0x0A, [0x0F, 0xFA]))
+        stored = [list(e) for e in razer.host_macro(Action.COMMAND, command)]
+        self.assertEqual(stored, [[razer.COMMAND, command]])
+        data = bytes(data).ljust(5, b"\0")
+        mapping = razer.decode(fn, data, 3, {3: stored})
+        self.assertEqual(mapping, (Action.COMMAND, command))
 
     def test_macro_all_buttons(self):
         macro = [(1, ecodes.KEY_A), (2, ecodes.KEY_A)]
@@ -399,6 +413,67 @@ class DeviceTest(unittest.TestCase):
         with open(razer.MACRO_FILE) as f:
             self.assertEqual(json.load(f), {})
         self.assertEqual(self.popen.call_count, 1)
+
+    def test_reassert(self):
+        macro = [(1, ecodes.KEY_LEFTMETA), (1, ecodes.KEY_W), (2, ecodes.KEY_W)]
+        razer.store_macro(8, macro)
+        t = FakeTransport()  # the mouse dropped button 8 back to DPI cycle
+        device = razer.RazerDevice(t)
+        p = device.profiles[0]
+        spare = [0x60, 0x00, 0x0A, 0x02, 0x0F, 0xFF]
+        self.assertEqual(
+            t.sent, [(0x02, 0x0C, 0x0A, [1, *spare]), (0x02, 0x0C, 0x0A, [0, *spare])]
+        )
+        self.assertEqual(p.buttons[8].macro.keys, macro)
+        t.sent.clear()
+        razer.reassert(t.query)  # intact: reads only
+        self.assertEqual(t.sent, [])
+        # Mapping it away in the UI drops the macro, so it is not rebound.
+        p.buttons[8].special = Special.RESOLUTION_CYCLE_UP
+        device.commit()
+        self.assertEqual(razer.load_macros(), {})
+        t.sent.clear()
+        razer.reassert(t.query)
+        self.assertEqual(t.sent, [])
+
+    def test_command_button(self):
+        p = self.profile
+        p.buttons[8].command = "true"
+        self.device.commit()
+        self.assertEqual(razer.load_macros(), {8: [[razer.COMMAND, "true"]]})
+        self.popen.assert_called_once()  # the macro service plays commands too
+        t = FakeTransport()
+        t.buttons.update(self.t.buttons)  # what the commit mapped
+        device = razer.RazerDevice(t)
+        self.assertEqual(t.sent, [])  # bound already, so reassert writes nothing
+        self.assertEqual(device.profiles[0].buttons[8].command, "true")
+        t.buttons.clear()  # the mouse dropped it: rebound like a macro
+        razer.reassert(t.query)
+        spare = [0x60, 0x00, 0x0A, 0x02, 0x0F, 0xFF]
+        self.assertEqual(t.sent[-1], (0x02, 0x0C, 0x0A, [0, *spare]))
+        p.buttons[8].special = Special.RESOLUTION_CYCLE_UP
+        self.device.commit()
+        self.assertEqual(razer.load_macros(), {})
+
+    def test_reassert_waits_for_apply(self):
+        razer.store_macro(8, [(1, ecodes.KEY_A), (2, ecodes.KEY_A)])
+        t = FakeTransport()
+        device = razer.RazerDevice(t)
+        device.profiles[0].buttons[8].special = Special.RESOLUTION_CYCLE_UP
+        t.buttons.clear()  # the mouse dropped button 8 again
+        gui = threading.Thread(target=device.commit)
+
+        def service_query(cls, cid, size, args=()):
+            if not gui.is_alive() and gui.ident is None:
+                gui.start()  # Apply right after the service read the file
+                gui.join(0.2)
+            return t.query(cls, cid, size, args)
+
+        razer.reassert(service_query)
+        gui.join()
+        self.assertEqual(razer.load_macros(), {})
+        dpi_cycle = bytes([0, 0x60, 0, 0x06, 0x01, 0x06])
+        self.assertEqual([t.buttons[(s, 0x60)] for s in (1, 0)], [dpi_cycle] * 2)
 
     def test_service_start_failure_ignored(self):
         self.popen.side_effect = FileNotFoundError("systemctl")

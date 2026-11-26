@@ -1,7 +1,7 @@
 # Builds RPiper from the local checkout (two directories up), including uncommitted changes.
 pkgname=rpiper
 pkgver=0.8
-pkgrel=1
+pkgrel=2
 pkgdesc='Fork of Piper (mouse configuration tool) with Razer support'
 arch=(any)
 url='https://github.com/ErenEksen/RPiper'
